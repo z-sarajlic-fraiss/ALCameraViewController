@@ -10,6 +10,10 @@ import UIKit
 import AVFoundation
 import Photos
 
+public protocol ALCameraImageSaveDelegate {
+    func saveImageToTask(image: UIImage, showPhotos: Bool)
+}
+
 public typealias CameraViewCompletion = (UIImage?, PHAsset?) -> Void
 
 public extension CameraViewController {
@@ -49,6 +53,7 @@ open class CameraViewController: UIViewController {
     var croppingParameters: CroppingParameters
     var animationRunning = false
     let allowVolumeButtonCapture: Bool
+    var delegate: ALCameraImageSaveDelegate?
     
     var lastInterfaceOrientation : UIInterfaceOrientation?
     open var onCompletion: CameraViewCompletion?
@@ -163,6 +168,7 @@ open class CameraViewController: UIViewController {
                 allowsLibraryAccess: Bool = true,
                 allowsSwapCameraOrientation: Bool = true,
                 allowVolumeButtonCapture: Bool = true,
+                delegate: ALCameraImageSaveDelegate,
                 completion: @escaping CameraViewCompletion) {
 
         self.croppingParameters = croppingParameters
@@ -175,6 +181,8 @@ open class CameraViewController: UIViewController {
         libraryButton.isHidden = !allowsLibraryAccess
 		swapButton.isEnabled = allowsSwapCameraOrientation
 		swapButton.isHidden = !allowsSwapCameraOrientation
+        
+        self.delegate = delegate
     }
 	
     required public init?(coder aDecoder: NSCoder) {
@@ -595,16 +603,28 @@ open class CameraViewController: UIViewController {
 	private func startConfirmController(uiImage: UIImage) {
 		let confirmViewController = ConfirmViewController(image: uiImage, croppingParameters: croppingParameters)
 		confirmViewController.onComplete = { [weak self] image, asset in
+            
+            print("YES SO what is now?")
+            
+            /*
 			defer {
 				self?.dismiss(animated: true, completion: nil)
 			}
-			
-			guard let image = image else {
-				return
-			}
-			
+			*/
+            
+			/*
 			self?.onCompletion?(image, asset)
 			self?.onCompletion = nil
+             */
+            
+            if let image = image {
+                self?.delegate?.saveImageToTask(image: image, showPhotos: false)
+                self?.dismiss(animated: true, completion: nil)
+                
+            } else {
+                self?.dismiss(animated: true, completion: nil)
+            }
+            
 		}
 		confirmViewController.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
 		present(confirmViewController, animated: true, completion: nil)
@@ -613,16 +633,15 @@ open class CameraViewController: UIViewController {
     private func startConfirmController(asset: PHAsset) {
         let confirmViewController = ConfirmViewController(asset: asset, croppingParameters: croppingParameters)
         confirmViewController.onComplete = { [weak self] image, asset in
-            defer {
+
+            if let image = image {
+                self?.delegate?.saveImageToTask(image: image, showPhotos: false)
+                self?.dismiss(animated: true, completion: nil)
+                
+            } else {
                 self?.dismiss(animated: true, completion: nil)
             }
-
-            guard let image = image, let asset = asset else {
-                return
-            }
-
-            self?.onCompletion?(image, asset)
-            self?.onCompletion = nil
+            
         }
         confirmViewController.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
         present(confirmViewController, animated: true, completion: nil)

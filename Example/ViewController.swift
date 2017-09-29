@@ -8,7 +8,9 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+
+
+class ViewController: UIViewController, ALCameraImageSaveDelegate {
 
     var libraryEnabled: Bool = true
     var croppingEnabled: Bool = false
@@ -31,12 +33,18 @@ class ViewController: UIViewController {
     }
     
     @IBAction func openCamera(_ sender: Any) {
-        let cameraViewController = CameraViewController(croppingParameters: croppingParameters, allowsLibraryAccess: libraryEnabled) { [weak self] image, asset in
+        
+        let cameraViewController = CameraViewController(croppingParameters: croppingParameters, allowsLibraryAccess: libraryEnabled, allowsSwapCameraOrientation: true, allowVolumeButtonCapture: true, delegate: self, completion: { [weak self] image, asset in
             self?.imageView.image = image
             self?.dismiss(animated: true, completion: nil)
-        }
+        })
         
         present(cameraViewController, animated: true, completion: nil)
+        
+    }
+    
+    func saveImageToTask(image: UIImage, showPhotos: Bool) {
+        print("save image to task")
     }
     
     @IBAction func openLibrary(_ sender: Any) {
