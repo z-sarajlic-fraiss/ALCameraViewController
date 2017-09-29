@@ -16,7 +16,7 @@ internal let scale = UIScreen.main.scale
 
 public class CameraGlobals {
     public static let shared = CameraGlobals()
-    
+    public var albumName = "rocketform"
     public var bundle = Bundle(for: CameraViewController.self)
     public var stringsTable = "CameraView"
     public var photoLibraryThumbnailSize = CGSize(width: thumbnailDimension, height: thumbnailDimension)

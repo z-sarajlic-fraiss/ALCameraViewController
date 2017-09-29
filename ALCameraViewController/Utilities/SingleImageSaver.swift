@@ -37,6 +37,36 @@ public class SingleImageSaver {
         return self
     }
     
+    let assetCollection: PHAssetCollection? = {
+        var assetCollection: PHAssetCollection? = nil
+        
+        let fetchOptions = PHFetchOptions()
+        fetchOptions.predicate = NSPredicate(format: "title = %@", CameraGlobals.shared.albumName)
+        let collection = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: fetchOptions)
+        
+        if collection.firstObject != nil {
+            return collection.firstObject
+        }
+        
+        do {
+            try PHPhotoLibrary.shared().performChangesAndWait({
+                
+                
+                PHAssetCollectionChangeRequest.creationRequestForAssetCollection(withTitle: CameraGlobals.shared.albumName)
+                
+                
+                
+            })
+        } catch {
+            print("UNABLE TO WRITE INTO MEDIA")
+            return nil
+            
+        }
+        assetCollection = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: fetchOptions).firstObject
+        
+        return assetCollection
+    }()
+    
     public func save() -> Self {
         
         _ = PhotoLibraryAuthorizer { error in
@@ -49,7 +79,7 @@ public class SingleImageSaver {
 
         return self
     }
-    
+    /*
     private func _save() {
         guard let image = image else {
             self.invokeFailure()
@@ -70,6 +100,38 @@ public class SingleImageSaver {
                 }
                 
                 self.fetch(assetIdentifier)
+        }
+    }
+    */
+    
+    private func _save() {
+        guard let image = image else {
+            self.invokeFailure()
+            return
+        }
+        var assetIdentifier: PHObjectPlaceholder?
+        
+        if assetCollection == nil {
+            self.invokeFailure()
+            return
+        }
+        
+        PHPhotoLibrary.shared().performChanges({
+            let assetChangeRequest = PHAssetChangeRequest.creationRequestForAsset(from: image)
+            assetIdentifier = assetChangeRequest.placeholderForCreatedAsset
+            let albumChangeRequest = PHAssetCollectionChangeRequest(for: self.assetCollection!)
+            
+            let enumeration: NSArray = [assetIdentifier!]
+            albumChangeRequest!.addAssets(enumeration)
+            
+        }) { finished, error in
+            
+            if let assetIdentifier = assetIdentifier {
+                self.fetch(assetIdentifier)
+            } else {
+                self.invokeFailure()
+                return
+            }
         }
     }
     
