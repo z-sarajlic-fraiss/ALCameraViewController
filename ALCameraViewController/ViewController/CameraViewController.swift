@@ -11,7 +11,7 @@ import AVFoundation
 import Photos
 
 public protocol ALCameraImageSaveDelegate {
-    func saveImageToTask(image: UIImage, showPhotos: Bool)
+    func saveImageToTask(image: UIImage, showPhotos: Bool, scanner: Bool, initialDescription: String)
 }
 
 public typealias CameraViewCompletion = (UIImage?, PHAsset?) -> Void
@@ -658,7 +658,7 @@ open class CameraViewController: UIViewController {
         confirmViewController.onComplete = { [weak self] image, asset in
             
             if let image = image {
-                self?.delegate?.saveImageToTask(image: image, showPhotos: false)
+                self?.delegate?.saveImageToTask(image: image, showPhotos: false, scanner: false, initialDescription: "")
                 self?.dismiss(animated: true, completion: nil)
                 
             } else {
@@ -674,13 +674,13 @@ open class CameraViewController: UIViewController {
         confirmViewController.onComplete = { [weak self] image, asset in
             
             if let image = image {
-                self?.delegate?.saveImageToTask(image: image, showPhotos: false)
+                self?.delegate?.saveImageToTask(image: image, showPhotos: false, scanner: false, initialDescription: "")
                 self?.dismiss(animated: true, completion: nil)
                 
             } else {
                 self?.dismiss(animated: true, completion: nil)
             }
-
+            
         }
         confirmViewController.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
         present(confirmViewController, animated: true, completion: nil)
@@ -704,4 +704,3 @@ open class CameraViewController: UIViewController {
     }
     
 }
-
