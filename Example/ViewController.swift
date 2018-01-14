@@ -8,8 +8,6 @@
 
 import UIKit
 
-
-
 class ViewController: UIViewController, ALCameraImageSaveDelegate {
 
     var libraryEnabled: Bool = true
@@ -43,7 +41,7 @@ class ViewController: UIViewController, ALCameraImageSaveDelegate {
         
     }
     
-    func saveImageToTask(image: UIImage, showPhotos: Bool) {
+    func saveImageToTask(image: UIImage, showPhotos: Bool, scanner: Bool, initialDescription: String) {
         print("save image to task")
     }
     
