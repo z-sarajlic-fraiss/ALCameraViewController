@@ -51,14 +51,16 @@ public class PhotoLibraryViewController: UIViewController {
         
         setNeedsStatusBarAppearanceUpdate()
         
-        let buttonImage = UIImage(named: "libraryCancel", in: CameraGlobals.shared.bundle, compatibleWith: nil)?.withRenderingMode(UIImageRenderingMode.alwaysOriginal)
+        let buttonImage = UIImage(named: "libraryCancel", in: CameraGlobals.shared.bundle, compatibleWith: nil)?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: buttonImage,
                                                            style: UIBarButtonItemStyle.plain,
                                                            target: self,
                                                            action: #selector(dismissLibrary))
         
-        buttonImageConfirmLibrarySelection = UIImage(named: "libraryConfirm", in: CameraGlobals.shared.bundle, compatibleWith: nil)?.withRenderingMode(UIImageRenderingMode.alwaysOriginal)
+        
+        
+        buttonImageConfirmLibrarySelection = UIImage(named: "libraryConfirm", in: CameraGlobals.shared.bundle, compatibleWith: nil)?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: buttonImageConfirmLibrarySelection,
                                                             style: UIBarButtonItemStyle.plain,
@@ -71,13 +73,17 @@ public class PhotoLibraryViewController: UIViewController {
             collectionView.allowsMultipleSelection = false
         }
         
-        view.backgroundColor = UIColor(white: 0.2, alpha: 1)
+        view.backgroundColor = UIColor(red: 0.94, green: 0.94, blue: 0.94, alpha:1.0)
+        
         view.addSubview(collectionView)
         
         _ = ImageFetcher()
             .onFailure(onFailure)
             .onSuccess(onSuccess)
             .fetch()
+        
+        self.navigationController?.navigationBar.tintColor = UIColor.white
+        self.navigationController?.navigationBar.isTranslucent = false
     }
     
     public override func viewWillLayoutSubviews() {
@@ -91,13 +97,15 @@ public class PhotoLibraryViewController: UIViewController {
     
     public func present(_ inViewController: UIViewController, animated: Bool) {
         let navigationController = UINavigationController(rootViewController: self)
-        navigationController.navigationBar.barTintColor = UIColor.black
+        navigationController.navigationBar.barTintColor = UIColor(red:0.16, green:0.18, blue:0.23, alpha:1.0)
         navigationController.navigationBar.barStyle = UIBarStyle.black
+        navigationController.navigationBar.isTranslucent = false
         inViewController.present(navigationController, animated: animated, completion: nil)
     }
     
     @objc public func dismissLibrary() {
-        onSelectionComplete?(nil)
+        //onSelectionComplete?(nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
     @objc public func saveSelectionInLibrary() {
@@ -153,6 +161,8 @@ extension PhotoLibraryViewController : UICollectionViewDataSource {
                 cell.contentView.layer.opacity = 0.3
                 
                 let imageView = UIImageView(image: buttonImageConfirmLibrarySelection)
+                imageView.tintColor = UIColor(red:0.16, green:0.70, blue:0.48, alpha:1.0)
+                
                 imageView.frame = CGRect(x: 2, y: 2, width: 16, height: 16)
                 let view = UIView(frame: CGRect(x: cell.bounds.width - 24 , y: cell.bounds.height - 24, width: 20, height: 20))
                 view.layer.borderColor = UIColor.darkGray.cgColor
@@ -209,3 +219,4 @@ extension PhotoLibraryViewController : UICollectionViewDelegateFlowLayout {
         }
     }
 }
+
