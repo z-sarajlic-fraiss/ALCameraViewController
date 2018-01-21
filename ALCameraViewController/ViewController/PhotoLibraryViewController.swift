@@ -73,7 +73,7 @@ public class PhotoLibraryViewController: UIViewController {
             collectionView.allowsMultipleSelection = false
         }
         
-        view.backgroundColor = UIColor(red: 0.94, green: 0.94, blue: 0.94, alpha:1.0)
+        view.backgroundColor = UIColor(red:0.93, green:0.93, blue:0.94, alpha:1.0)
         
         view.addSubview(collectionView)
         
@@ -97,7 +97,7 @@ public class PhotoLibraryViewController: UIViewController {
     
     public func present(_ inViewController: UIViewController, animated: Bool) {
         let navigationController = UINavigationController(rootViewController: self)
-        navigationController.navigationBar.barTintColor = UIColor(red:0.16, green:0.18, blue:0.23, alpha:1.0)
+        navigationController.navigationBar.barTintColor = UIColor(red:0.15, green:0.15, blue:0.17, alpha:1.0)
         navigationController.navigationBar.barStyle = UIBarStyle.black
         navigationController.navigationBar.isTranslucent = false
         inViewController.present(navigationController, animated: animated, completion: nil)
@@ -219,4 +219,3 @@ extension PhotoLibraryViewController : UICollectionViewDelegateFlowLayout {
         }
     }
 }
-
