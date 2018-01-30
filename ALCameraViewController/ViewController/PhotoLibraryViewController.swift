@@ -98,7 +98,7 @@ public class PhotoLibraryViewController: UIViewController {
     public func present(_ inViewController: UIViewController, animated: Bool) {
         let navigationController = UINavigationController(rootViewController: self)
         navigationController.navigationBar.barTintColor = UIColor(red:0.15, green:0.15, blue:0.17, alpha:1.0)
-        navigationController.navigationBar.barStyle = UIBarStyle.black
+
         navigationController.navigationBar.isTranslucent = false
         inViewController.present(navigationController, animated: animated, completion: nil)
     }

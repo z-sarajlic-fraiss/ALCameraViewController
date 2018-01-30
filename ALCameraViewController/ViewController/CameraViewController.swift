@@ -23,8 +23,8 @@ public extension CameraViewController {
         let imagePicker = PhotoLibraryViewController()
         let navigationController = UINavigationController(rootViewController: imagePicker)
         
-        navigationController.navigationBar.barTintColor = UIColor.black
-        navigationController.navigationBar.barStyle = UIBarStyle.black
+        navigationController.navigationBar.barTintColor = UIColor(red:0.15, green:0.15, blue:0.17, alpha:1.0)
+        navigationController.navigationBar.isTranslucent = false
         navigationController.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
         
         imagePicker.onSelectionComplete = { [weak imagePicker] asset in
