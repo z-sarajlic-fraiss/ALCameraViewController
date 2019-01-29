@@ -70,9 +70,9 @@ public extension CameraViewController {
                         
                         let options = PHImageRequestOptions()
                         
-                        options.deliveryMode = .highQualityFormat
+                        options.deliveryMode = .fastFormat
                         options.isNetworkAccessAllowed = true
-                        options.resizeMode = .exact
+                        options.resizeMode = .fast
                         options.isSynchronous = true
                         
                         let targetWidth = floor(CGFloat(_asset.pixelWidth))
