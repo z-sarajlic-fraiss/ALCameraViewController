@@ -375,16 +375,15 @@ open class CameraViewController: UIViewController {
         super.viewWillTransition(to: size, with: coordinator)
         
         lastInterfaceOrientation = UIApplication.shared.statusBarOrientation
-        if animationRunning {
-            return
-        }
-        
+
         CATransaction.begin()
         CATransaction.setDisableActions(true)
         coordinator.animate(alongsideTransition: { [weak self] animation in
             self?.view.setNeedsUpdateConstraints()
-            }, completion: { _ in
-                CATransaction.commit()
+            }, completion: {
+                guard !$0.isCancelled else { return }
+                
+                self.rotateCameraView()
         })
     }
     
@@ -453,6 +452,9 @@ open class CameraViewController: UIViewController {
     }
     
     @objc func rotateCameraView() {
+        cameraView.stopSession()
+        cameraView.startSession()
+        
         cameraView.rotatePreview()
     }
     
@@ -704,3 +706,4 @@ open class CameraViewController: UIViewController {
     }
     
 }
+
