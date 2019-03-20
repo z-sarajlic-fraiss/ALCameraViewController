@@ -106,7 +106,6 @@ open class CameraViewController: UIViewController {
     let allowVolumeButtonCapture: Bool
     var delegate: ALCameraImageSaveDelegate?
     
-    var lastInterfaceOrientation : UIInterfaceOrientation?
     open var onCompletion: CameraViewCompletion?
     open var onMultipleCompletion: CameraViewMultipleCompletion?
     var volumeControl: VolumeControl?
@@ -373,13 +372,11 @@ open class CameraViewController: UIViewController {
      */
     override open func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        
-        lastInterfaceOrientation = UIApplication.shared.statusBarOrientation
 
         CATransaction.begin()
         CATransaction.setDisableActions(true)
         coordinator.animate(alongsideTransition: { [weak self] animation in
-            self?.view.setNeedsUpdateConstraints()
+            self?.view.layoutIfNeeded()
             }, completion: {
                 guard !$0.isCancelled else { return }
                 
@@ -405,11 +402,11 @@ open class CameraViewController: UIViewController {
      * orientation of CameraView.
      */
     private func addRotateObserver() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(rotateCameraView),
-            name: NSNotification.Name.UIDeviceOrientationDidChange,
-            object: nil)
+//        NotificationCenter.default.addObserver(
+//            self,
+//            selector: #selector(rotateCameraView),
+//            name: NSNotification.Name.UIDeviceOrientationDidChange,
+//            object: nil)
     }
     
     @objc internal func notifyCameraReady() {
@@ -452,8 +449,8 @@ open class CameraViewController: UIViewController {
     }
     
     @objc func rotateCameraView() {
-        cameraView.stopSession()
-        cameraView.startSession()
+//        cameraView.stopSession()
+//        cameraView.startSession()
         
         cameraView.rotatePreview()
     }
@@ -463,13 +460,7 @@ open class CameraViewController: UIViewController {
      * the last and actual orientation of the device.
      */
     internal func rotate(actualInterfaceOrientation: UIInterfaceOrientation) {
-        
-        if lastInterfaceOrientation != nil {
-            let lastTransform = CGAffineTransform(rotationAngle: radians(currentRotation(
-                lastInterfaceOrientation!, newOrientation: actualInterfaceOrientation)))
-            setTransform(transform: lastTransform)
-        }
-        
+
         let transform = CGAffineTransform(rotationAngle: 0)
         animationRunning = true
         
@@ -706,4 +697,3 @@ open class CameraViewController: UIViewController {
     }
     
 }
-
