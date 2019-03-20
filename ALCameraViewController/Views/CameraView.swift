@@ -5,7 +5,6 @@
 //  Created by Alex Littlejohn on 2015/06/17.
 //  Copyright (c) 2015 zero. All rights reserved.
 //
-
 import UIKit
 import AVFoundation
 
@@ -275,21 +274,22 @@ public class CameraView: UIView {
     }
   
     public func rotatePreview() {
-
-        guard let preview = preview else { return }
-        
+      
+        guard preview != nil else {
+            return
+        }
         switch UIApplication.shared.statusBarOrientation {
             case .portrait:
-              preview.connection?.videoOrientation = AVCaptureVideoOrientation.portrait
+              preview?.connection?.videoOrientation = AVCaptureVideoOrientation.portrait
               break
             case .portraitUpsideDown:
-              preview.connection?.videoOrientation = AVCaptureVideoOrientation.portraitUpsideDown
+              preview?.connection?.videoOrientation = AVCaptureVideoOrientation.portraitUpsideDown
               break
             case .landscapeRight:
-              preview.connection?.videoOrientation = AVCaptureVideoOrientation.landscapeRight
+              preview?.connection?.videoOrientation = AVCaptureVideoOrientation.landscapeRight
               break
             case .landscapeLeft:
-              preview.connection?.videoOrientation = AVCaptureVideoOrientation.landscapeLeft
+              preview?.connection?.videoOrientation = AVCaptureVideoOrientation.landscapeLeft
               break
             default: break
         }
