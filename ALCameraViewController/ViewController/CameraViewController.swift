@@ -411,6 +411,8 @@ open class CameraViewController: UIViewController {
     
     @objc internal func notifyCameraReady() {
         cameraButton.isEnabled = true
+        
+        rotateCameraView()
     }
     
     /**
