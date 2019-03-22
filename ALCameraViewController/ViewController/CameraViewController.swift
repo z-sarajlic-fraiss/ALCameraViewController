@@ -5,6 +5,7 @@
 //  Created by Alex Littlejohn.
 //  Copyright (c) 2016 zero. All rights reserved.
 //
+
 import UIKit
 import AVFoundation
 import Photos
@@ -69,9 +70,9 @@ public extension CameraViewController {
                         
                         let options = PHImageRequestOptions()
                         
-                        options.deliveryMode = .fastFormat
+                        options.deliveryMode = .highQualityFormat
                         options.isNetworkAccessAllowed = true
-                        options.resizeMode = .fast
+                        options.resizeMode = .exact
                         options.isSynchronous = true
                         
                         let targetWidth = floor(CGFloat(_asset.pixelWidth))
@@ -140,8 +141,8 @@ open class CameraViewController: UIViewController {
     var cameraOverlayWidthConstraint: NSLayoutConstraint?
     var cameraOverlayCenterConstraint: NSLayoutConstraint?
     
-    let cameraView : CameraView = {
-        let cameraView = CameraView()
+    lazy var cameraView : CameraView = {
+        let cameraView = CameraView(frame: view.bounds)
         cameraView.translatesAutoresizingMaskIntoConstraints = false
         return cameraView
     }()
@@ -314,7 +315,7 @@ open class CameraViewController: UIViewController {
         configCameraOverlayWidthConstraint(portrait)
         configCameraOverlayCenterConstraint(portrait)
         
-        rotate(actualInterfaceOrientation: statusBarOrientation)
+//        rotate(actualInterfaceOrientation: statusBarOrientation)
         
         super.updateViewConstraints()
     }
@@ -374,16 +375,15 @@ open class CameraViewController: UIViewController {
         super.viewWillTransition(to: size, with: coordinator)
         
         lastInterfaceOrientation = UIApplication.shared.statusBarOrientation
-        if animationRunning {
-            return
-        }
         
-        CATransaction.begin()
-        CATransaction.setDisableActions(true)
         coordinator.animate(alongsideTransition: { [weak self] animation in
             self?.view.setNeedsUpdateConstraints()
+            self?.cameraView.rotatePreview(UIApplication.shared.statusBarOrientation)
+            self?.cameraView.frame = self?.view.bounds ?? .zero
             }, completion: { _ in
-                CATransaction.commit()
+                
+                self.cameraView.frame = self.view.bounds
+//                self.rotate(actualInterfaceOrientation: UIApplication.shared.statusBarOrientation)
         })
     }
     
@@ -452,7 +452,8 @@ open class CameraViewController: UIViewController {
     }
     
     @objc func rotateCameraView() {
-        cameraView.rotatePreview()
+        
+//        cameraView.rotatePreview()
     }
     
     /**
