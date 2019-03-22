@@ -5,6 +5,7 @@
 //  Created by Alex Littlejohn on 2015/06/17.
 //  Copyright (c) 2015 zero. All rights reserved.
 //
+
 import UIKit
 import AVFoundation
 
@@ -58,7 +59,7 @@ public class CameraView: UIView {
             session.startRunning()
             DispatchQueue.main.async() { [weak self] in
                 self?.createPreview()
-                self?.rotatePreview()
+                self?.rotatePreview(UIApplication.shared.statusBarOrientation)
             }
         }
     }
@@ -273,12 +274,12 @@ public class CameraView: UIView {
         session.commitConfiguration()
     }
   
-    public func rotatePreview() {
+    public func rotatePreview(_ statusBarOrientation: UIInterfaceOrientation) {
       
         guard preview != nil else {
             return
         }
-        switch UIApplication.shared.statusBarOrientation {
+        switch statusBarOrientation {
             case .portrait:
               preview?.connection?.videoOrientation = AVCaptureVideoOrientation.portrait
               break
@@ -291,6 +292,7 @@ public class CameraView: UIView {
             case .landscapeLeft:
               preview?.connection?.videoOrientation = AVCaptureVideoOrientation.landscapeLeft
               break
+            
             default: break
         }
     }
