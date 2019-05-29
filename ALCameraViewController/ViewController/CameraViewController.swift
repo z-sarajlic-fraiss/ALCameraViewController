@@ -215,12 +215,14 @@ open class CameraViewController: UIViewController {
     }()
     
     private let allowsLibraryAccess: Bool
-    
+    var needMorePadding = false
+
     public init(croppingParameters: CroppingParameters = CroppingParameters(),
                 allowsLibraryAccess: Bool = true,
                 allowsSwapCameraOrientation: Bool = true,
                 allowVolumeButtonCapture: Bool = true,
                 delegate: ALCameraImageSaveDelegate,
+                needMorePadding: Bool = true,
                 completion: @escaping CameraViewCompletion) {
         
         self.croppingParameters = croppingParameters

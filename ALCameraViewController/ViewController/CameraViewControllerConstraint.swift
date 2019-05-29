@@ -60,7 +60,7 @@ extension CameraViewController {
             toItem: view,
             attribute: attribute,
             multiplier: 1.0,
-            constant: attribute == .right || attribute == .bottom ? -8 : 8)
+            constant: attribute == .right || attribute == .bottom ? (self.needMorePadding ? -100 : -10) : (self.needMorePadding ? 100 : 10))
         view.addConstraint(cameraButtonEdgeConstraint!)
     }
     
@@ -410,7 +410,7 @@ extension CameraViewController {
             toItem: view,
             attribute: attribute,
             multiplier: 1.0,
-            constant: constraintRight ? 8 : -8)
+            constant: constraintRight ? (self.needMorePadding ? 100 : 10): (self.needMorePadding ? -100 : -10))
         view.addConstraint(flashButtonEdgeConstraint!)
     }
     
