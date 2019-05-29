@@ -291,6 +291,7 @@ open class CameraViewController: UIViewController {
         configCameraButtonEdgeConstraint(statusBarOrientation)
         configCameraButtonGravityConstraint(portrait)
         
+        self.closeButton.isHidden = self.needMorePadding
         removeCloseButtonConstraints()
         configCloseButtonEdgeConstraint(statusBarOrientation)
         configCloseButtonGravityConstraint(statusBarOrientation)
