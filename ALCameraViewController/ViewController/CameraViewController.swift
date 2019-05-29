@@ -236,7 +236,7 @@ open class CameraViewController: UIViewController {
         libraryButton.isHidden = !allowsLibraryAccess
         swapButton.isEnabled = allowsSwapCameraOrientation
         swapButton.isHidden = !allowsSwapCameraOrientation
-        
+        self.needMorePadding = needMorePadding
         self.delegate = delegate
     }
     
