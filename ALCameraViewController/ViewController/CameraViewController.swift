@@ -222,7 +222,7 @@ open class CameraViewController: UIViewController {
                 allowsSwapCameraOrientation: Bool = true,
                 allowVolumeButtonCapture: Bool = true,
                 delegate: ALCameraImageSaveDelegate,
-                needMorePadding: Bool = true,
+                needMorePadding: Bool = false,
                 completion: @escaping CameraViewCompletion) {
         
         self.croppingParameters = croppingParameters
