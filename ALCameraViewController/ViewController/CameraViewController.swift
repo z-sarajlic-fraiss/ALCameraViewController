@@ -11,7 +11,7 @@ import AVFoundation
 import Photos
 
 public protocol ALCameraImageSaveDelegate {
-    func saveImageToTask(image: UIImage, showPhotos: Bool, scanner: Bool, initialDescription: String)
+    func saveImageToTask(image: UIImage, showPhotos: Bool, scanner: Bool, initialDescription: String, creationDate: Date?)
 }
 
 public typealias CameraViewCompletion = (UIImage?, PHAsset?) -> Void
@@ -661,7 +661,7 @@ open class CameraViewController: UIViewController {
         confirmViewController.onComplete = { [weak self] image, asset in
             
             if let image = image {
-                self?.delegate?.saveImageToTask(image: image, showPhotos: false, scanner: false, initialDescription: "")
+                self?.delegate?.saveImageToTask(image: image, showPhotos: false, scanner: false, initialDescription: "", creationDate: asset?.creationDate)
                 self?.dismiss(animated: true, completion: nil)
                 
             } else {
@@ -677,7 +677,7 @@ open class CameraViewController: UIViewController {
         confirmViewController.onComplete = { [weak self] image, asset in
             
             if let image = image {
-                self?.delegate?.saveImageToTask(image: image, showPhotos: false, scanner: false, initialDescription: "")
+                self?.delegate?.saveImageToTask(image: image, showPhotos: false, scanner: false, initialDescription: "", creationDate: asset?.creationDate)
                 self?.dismiss(animated: true, completion: nil)
                 
             } else {
